@@ -1,8 +1,17 @@
 angular.module('app').controller('HomeCtrl', function($scope) {
-  $scope.greeting = 'World';
+  $scope.greeting = 'ששי';
 
   $scope.model = {
     text: ''
+  };
+
+  $scope.sender = {
+    text: 'רונן הורוביץ'
+  };
+
+
+  $scope.msgContent = {
+    text: 'כיף באזרחות'
   };
 
   $scope.buttonClicked = function() {
@@ -12,4 +21,9 @@ angular.module('app').controller('HomeCtrl', function($scope) {
       alert('Heya, ' + $scope.model.text);
     }
   };
+
+
+
 });
+
+
