@@ -1,3 +1,4 @@
+/*
 angular.module('app').controller('HomeCtrl', function($scope) {
   $scope.greeting = 'ששי';
 
@@ -27,3 +28,4 @@ angular.module('app').controller('HomeCtrl', function($scope) {
 });
 
 
+*/
