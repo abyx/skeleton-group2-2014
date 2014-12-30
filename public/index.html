@@ -20,9 +20,10 @@
         <script src="/js/view1.js"></script>
         <script src="/js/view2.js"></script>
         <script src="/js/ngDialog.js"></script>
+        <script src="/js/mainCtrl.js"></script>
     </head>
 
-    <body ng-controller="MainCtrl">
+    <body ng-controller="MainCtrl" >
 
         <div class="container" ng-view></div>
 
@@ -35,7 +36,7 @@
                 <div class="col-md-8">
 
                     <p>שם השולח:</p>
-                    <input class="form-control" type="text" ng-model="sender.text">
+                    <input class="form-control" type="text" ng-model="sender.text" >
                 </div>
             </div>
 
@@ -50,11 +51,20 @@
             <div class="row">
                 <div class="col-md-8">
                     <h4>
-                        <a href="" ng-click="openMessage()">ששי קבל הודעה</a>
+                        <!--a href="" ng-click="openMessage()">ששי קבל הודעה</a-->
+                        <a href="" ng-click="PollNewMessage()">בדוק הודעות</a>
                     </h4>
                 </div>
             </div>
 
+
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>
+                        <a href="" ng-click="sendMessage()">שלח הודעה</a>
+                    </h4>
+                </div>
+            </div>
         </div>
 
 
@@ -84,44 +94,6 @@
             <div class="ngdialog-buttons">
                 <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(confirmValue)">אישור</button>
             </div>
-        </script>
-
-        <!-- App -->
-        <script>
-
-            angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDialog) {
-                $rootScope.jsonData = '{"foo": "bar"}';
-                $rootScope.theme = 'ngdialog-theme-default';
-
-
-                $scope.openMessage = function () {
-                    console.log('SHIMI');
-                    ngDialog.openConfirm({
-                        template: 'modalDialogId',
-                        className: 'ngdialog-theme-default',
-                        //controller: 'MessageCtrl',
-                        scope: $scope
-                    }).then(function (value) {
-                        console.log('Modal promise resolved. Value: ', value);
-                    }, function (reason) {
-                        console.log('Modal promise rejected. Reason: ', reason);
-                    });
-                };
-
-
-                $rootScope.$on('ngDialog.opened', function (e, $dialog) {
-                    console.log('ngDialog opened: ' + $dialog.attr('id'));
-                });
-
-                $rootScope.$on('ngDialog.closed', function (e, $dialog) {
-                    console.log('ngDialog closed: ' + $dialog.attr('id'));
-                });
-
-                $rootScope.$on('ngDialog.closing', function (e, $dialog) {
-                    console.log('ngDialog closing: ' + $dialog.attr('id'));
-                });
-            });
-
         </script>
 
 

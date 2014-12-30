@@ -14,8 +14,21 @@ app.get('/example', function(request, response) {
   response.send({success: true});
 });
 
-app.post('/example/:id', function(request, response) {
+app.get('/WhatsOut', function(request, response) {
+  console.log('start get in the server');
+  console.log('request=' +request.query.username);
+  response.send({"sender":"ronen","content":"hello"})
+
+});
+
+app.post('/WhatsOut', function(request, response) {
+  console.log(request.body.sender);
+  console.log(request.body.date);
+  console.log(request.body.content);
+
+  /*console.log(request.body, request.params.id, 'query', request.query);
   console.log(request.body, request.params.id, 'query', request.query);
+  console.log(request.body, request.params.id, 'query', request.query);*/
   response.sendStatus(200);
 });
 

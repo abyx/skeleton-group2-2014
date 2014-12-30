@@ -57,6 +57,11 @@ angular.module('app').controller('MessageCtrl', function($scope) {
     }
   };
 
+  $scope.init = function() {
+    console.log("initttttttttttt");
+
+  }
+
 
 
 });
