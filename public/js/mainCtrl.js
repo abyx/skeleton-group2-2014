@@ -8,10 +8,14 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
     $scope.sender = {text: "sender"};
     $scope.msgContent={text: "content"};
 
-    $scope.openMessage = function () {
+    $scope.openMessage = function ()
+    {
 
         $http.get('/WhatsOut?username=5').
-            success(function(data, status, headers, config) {
+            success(function(data, status, headers, config)
+            {
+                console.log('data'+data);
+                if(data.sender==null) return;
                 console.log("data.sender - ",data.sender);
                 $scope.sender.text=data.sender;
                 console.log("data.content - ",data.content);
@@ -29,15 +33,6 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
                 }, function (reason) {
                     console.log('Modal promise rejected. Reason: ', reason);
                 });
-
-
-
-
-
-
-
-
-
 
             }).
             error(function(data, status, headers, config) {
@@ -93,4 +88,8 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
     $rootScope.$on('ngDialog.closing', function (e, $dialog) {
         console.log('ngDialog closing: ' + $dialog.attr('id'));
     });
+
+
+
+
 });
