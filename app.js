@@ -21,6 +21,15 @@ app.get('/WhatsOut', function(request, response) {
 
 });
 
+app.post('/', function(request,response) {
+  //console.log("request method " + request.method);
+     console.log("Sender: " + request.body.Sender);
+     console.log("Message Body: " + request.body.Message);
+
+     response.writeHead(200, {"Content-Type": "text/plain"});
+     response.write("success");
+     response.end();
+});
 app.post('/WhatsOut', function(request, response) {
   console.log(request.body.sender);
   console.log(request.body.date);
@@ -38,7 +47,6 @@ mongo.connect('mongodb://localhost/app', function(err, aDb) {
   }
 
   db = aDb;
-
   var server = app.listen(3000, function() {
     var host = server.address().address;
     var port = server.address().port;
