@@ -22,7 +22,46 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
                 $scope.msgContent.text=data.content;
                 // this callback will be called asynchronously
                 // when the response is available
+                play();
+                ngDialog.openConfirm({
+                    template: 'modalDialogId',
+                    className: 'ngdialog-theme-default',
+                    //controller: 'MessageCtrl',
+                    scope: $scope
+                }).then(function (value) {
+                    console.log('Modal promise resolved. Value: ', value);
+                }, function (reason) {
+                    console.log('Modal promise rejected. Reason: ', reason);
+                });
 
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
+
+
+
+
+
+    };
+
+
+    $scope.getAllMessages = function () {
+        console.log("in getAllMessages ");
+        $http.get('/WhatsOut/All?username=5').
+            success(function(data, status, headers, config)
+            {
+
+                console.log('data'+data);
+                if(data.sender==null) return;
+                console.log("data.sender - ",data.sender);
+                $scope.sender.text=data.sender;
+                console.log("data.content - ",data.content);
+                $scope.msgContent.text=data.content;
+                // this callback will be called asynchronously
+                // when the response is available
+                play();
                 ngDialog.openConfirm({
                     template: 'modalDialogId',
                     className: 'ngdialog-theme-default',
@@ -89,7 +128,52 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
         console.log('ngDialog closing: ' + $dialog.attr('id'));
     });
 
+    function play() {
+        console.log('in play');
+        /*var foo = new Sound("/samsung_whistle_ringtone2.mp3", 100, true);
+        foo.start();
+        foo.stop();
+        foo.start();
+        foo.init(100, false);
+        foo.remove();*/
 
+        new Audio("/samsung_whistle_ringtone2.mp3").play();
+    }
 
+    function Sound (source,volume,loop)
+    {
+        this.source=source;
+        this.volume=volume;
+        this.loop=loop;
+        var son;
+        this.son=son;
+        this.finish=false;
+        this.stop=function()
+        {
+            document.body.removeChild(this.son);
+        }
+        this.start=function()
+        {
+            if(this.finish)return false;
+            this.son=document.createElement("embed");
+            this.son.setAttribute("src",this.source);
+            this.son.setAttribute("hidden","true");
+            this.son.setAttribute("volume",this.volume);
+            this.son.setAttribute("autostart","true");
+            this.son.setAttribute("loop",this.loop);
+            document.body.appendChild(this.son);
+        }
+        this.remove=function()
+        {
+            document.body.removeChild(this.son);
+            this.finish=true;
+        }
+        this.init=function(volume,loop)
+        {
+            this.finish=false;
+            this.volume=volume;
+            this.loop=loop;
+        }
+    }
 
 });

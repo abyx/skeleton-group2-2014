@@ -46,6 +46,38 @@ app.get('/WhatsOut', function(request, response) {
 
 });
 
+
+app.get('/WhatsOut/All', function(request, response)
+{
+  console.log('start get in the server');
+  console.log('request=' +request.query.username);
+
+  //response.send({"sender":"ronen","content":"hello"})
+
+  db.collection('smsTable').find({isRead: true}).toArray(function(err,oldSms)
+  {
+    if  (err)
+    {
+      // handle  error
+      return;
+    }
+
+     console.log('send back list' );
+      console.log('send back list'+oldSms[0].content );
+      response.send(oldSms);
+
+
+
+
+
+  })
+
+  });
+
+
+
+
+
 app.post('/', function(request,response) {
   //console.log("request method " + request.method);
 
