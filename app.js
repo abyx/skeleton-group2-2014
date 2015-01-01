@@ -31,7 +31,7 @@ app.get('/WhatsOut', function(request, response) {
    {
 
       console.log(sms.sender);
-      response.send({"sender":sms.sender,"content":sms.message});
+      response.send({"sender":sms.sender,"content":sms.message,"owner":sms.owner, "messageDate":sms.messageDate});
 
      db.collection('msgTable').updateOne({_id:ObjectID(sms._id)},
          {$set:{isRead: true}},function(err,result){

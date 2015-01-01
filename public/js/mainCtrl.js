@@ -19,6 +19,7 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
                 if(data.sender==null) return;
                 console.log("data.sender - ",data.sender);
                 $scope.sender.text=data.sender;
+                console.log('data.owner '+data.owner);
                 $scope.owner.text= data.owner;
                 console.log("data.content - ",data.content);
                 $scope.msgContent.text=data.content;
