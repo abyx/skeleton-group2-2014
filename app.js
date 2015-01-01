@@ -13,12 +13,12 @@ app.use(bodyParser.json());
 
 
 app.get('/WhatsOut', function(request, response) {
-  console.log('start get in the server');
-  console.log('request=' +request.query.username);
+  //console.log('start get in the server');
+  //console.log('request=' +request.query.username);
 
   //response.send({"sender":"ronen","content":"hello"})
 
-  db.collection('smsTable').findOne({isRead: false},function(err,sms){
+  db.collection('msgTable').findOne({isRead: false},function(err,sms){
     if  (err){
       // handle  error
       return;
@@ -33,7 +33,7 @@ app.get('/WhatsOut', function(request, response) {
       console.log(sms.sender);
       response.send({"sender":sms.sender,"content":sms.message});
 
-     db.collection('smsTable').updateOne({_id:ObjectID(sms._id)},
+     db.collection('msgTable').updateOne({_id:ObjectID(sms._id)},
          {$set:{isRead: true}},function(err,result){
            if(err){consol.log('error update sms')}
          }
@@ -49,12 +49,12 @@ app.get('/WhatsOut', function(request, response) {
 
 app.get('/WhatsOut/All', function(request, response)
 {
-  console.log('start get in the server');
-  console.log('request=' +request.query.username);
+  console.log('start getAll in the server');
+
 
   //response.send({"sender":"ronen","content":"hello"})
 
-  db.collection('smsTable').find({isRead: true}).toArray(function(err,oldSms)
+  db.collection('msgTable').find({isRead: true}).sort(['messageDate', 'desc']).toArray(function(err,oldSms)
   {
     if  (err)
     {
@@ -62,8 +62,8 @@ app.get('/WhatsOut/All', function(request, response)
       return;
     }
 
-     console.log('send back list' );
-      console.log('send back list'+oldSms[0].content );
+
+
       response.send(oldSms);
 
 
@@ -78,36 +78,50 @@ app.get('/WhatsOut/All', function(request, response)
 
 
 
-app.post('/', function(request,response) {
-  //console.log("request method " + request.method);
+app.post('/sms', function(request,response)
+  {
+    //console.log("request method " + request.method);
+    db.collection('msgTable').insertOne({sender:request.body.Sender,message:request.body.Message,isRead:false, callType: 'sms',owner:request.body.Owner,messageDate: new Date()},function (err,result)
+    {
+      if  (err)
+      {
+        // handle  error
+        return;
+      }
+
+      console.log("Sender from moshe: " + request.body.Sender);
+      console.log("Message Body moshe: " + request.body.Message);
+      var savedTodo = result.ops[0];
+
+  })});
+
+  app.post('/call', function(request,response)
+  {
+    //console.log("request method " + request.method);
+    db.collection('msgTable').insertOne({sender:request.body.Sender,message:'',isRead:false, callType: 'call', owner:request.body.Owner,messageDate: new Date()},function (err,result)
+    {
+      if  (err)
+      {
+        // handle  error
+        return;
+      }
+
+      console.log("Sender from phone: " + request.body.Sender);
 
 
+      var savedTodo = result.ops[0];
 
-  db.collection('smsTable').insertOne({sender:request.body.Sender,message:request.body.Message,isRead:false},function (err,result){
-    if  (err){
-      // handle  error
-      return;
-    }
-
-    console.log("Sender from moshe: " + request.body.Sender);
-    console.log("Message Body moshe: " + request.body.Message);
-
-    var savedTodo = result.ops[0];
-
-  });
-
-
-
-response.writeHead(200, {"Content-Type": "text/plain"});
+    });
+      response.writeHead(200, {"Content-Type": "text/plain"});
      response.write("success");
      response.end();
-});
+  });
 
 
 app.post('/WhatsOut', function(request, response)
 {
 
-  db.collection('smsTable').insertOne({sender:request.body.sender,message:request.body.content,isRead:false},function (err,result)
+  db.collection('msgTable').insertOne({sender:request.body.sender,message:request.body.content,isRead:false, callType:'sms',owner:'ronen',messageDate: new Date()},function (err,result)
   {
     if (err)
     {

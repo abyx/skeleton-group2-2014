@@ -21,12 +21,20 @@
         <script src="/js/view2.js"></script>
         <script src="/js/ngDialog.js"></script>
         <script src="/js/mainCtrl.js"></script>
+
+        <style>
+            li {
+                border: 1px solid black;
+                border-radius: 10px;
+                margin: 10px;
+            }
+        </style>
     </head>
 
     <body ng-controller="MainCtrl" >
 
         <div class="container" ng-view></div>
-
+    <div id="debug" ng-show="false">
         <div class="row">
             <div class="col-md-8">
                 <h2>This is a whatsout tester</h2>
@@ -48,6 +56,8 @@
                     <input class="form-control" type="text" ng-model="msgContent.text" >
                 </div>
             </div>
+        </div>
+        </div>
             <div class="row">
                 <div class="col-md-8">
                     <h4>
@@ -65,6 +75,44 @@
                     </h4>
                 </div>
             </div>
+
+            <div ng-hide="AllMessages">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>
+                            <a href="" ng-click="getAllMessages()"/>
+הצג היסטורית הודעות
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="AllMessages">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>
+                          <a href="" ng-click="hideAllMessages()"/>
+                    הסתר היסטורית הודעות
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+
+                <ul style="margin-right: 551px;width: 40%;list-style: none;
+text-align: center;" >
+
+
+
+                    <li ng-repeat="sms in AllMessages | limitTo: 5 |orderBy:'messageDate':true ">
+                        <p>owner:  {{sms.owner}}</p>
+                        <p>sender name: {{sms.sender}}</p>
+                        <p>content:  {{sms.message}}</p>
+                        <p>type:  {{sms.callType}}</p>
+                        <p>time:  {{sms.messageDate}}</p>
+                    </li>
+                </ul>
+            </div>
+
             <!--div class="row">
                 <div class="col-md-8">
                     <h4>
@@ -82,6 +130,15 @@
                 <font color="red"><b>התקבלה הודעה חדשה !!</b></font>
                 <img src="whatsapp.png" alt="whatsapp" style="width:80px;height:80px">
                 </h3>
+
+                <p>
+                    <b>
+שלום
+                    </b>
+                    {{ owner.text}}
+                </p>
+
+
                 <p>
                     <b>
                         קיבלת הודעה חדשה מ:

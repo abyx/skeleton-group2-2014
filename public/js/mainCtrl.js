@@ -7,6 +7,7 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
 
     $scope.sender = {text: "sender"};
     $scope.msgContent={text: "content"};
+    $scope.owner = {text: "owner"};
 
     $scope.openMessage = function ()
     {
@@ -18,6 +19,7 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
                 if(data.sender==null) return;
                 console.log("data.sender - ",data.sender);
                 $scope.sender.text=data.sender;
+                $scope.owner.text= data.owner;
                 console.log("data.content - ",data.content);
                 $scope.msgContent.text=data.content;
                 // this callback will be called asynchronously
@@ -45,33 +47,19 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
 
 
     };
-
+$scope.hideAllMessages=function(){
+    $scope.AllMessages=null;
+}
 
     $scope.getAllMessages = function () {
         console.log("in getAllMessages ");
         $http.get('/WhatsOut/All?username=5').
             success(function(data, status, headers, config)
             {
+                $scope.AllMessages=data;
+                console.log('dataSender '+data[1].sender);
+                console.log('dataContent '+data[1].message);
 
-                console.log('data'+data);
-                if(data.sender==null) return;
-                console.log("data.sender - ",data.sender);
-                $scope.sender.text=data.sender;
-                console.log("data.content - ",data.content);
-                $scope.msgContent.text=data.content;
-                // this callback will be called asynchronously
-                // when the response is available
-                play();
-                ngDialog.openConfirm({
-                    template: 'modalDialogId',
-                    className: 'ngdialog-theme-default',
-                    //controller: 'MessageCtrl',
-                    scope: $scope
-                }).then(function (value) {
-                    console.log('Modal promise resolved. Value: ', value);
-                }, function (reason) {
-                    console.log('Modal promise rejected. Reason: ', reason);
-                });
 
             }).
             error(function(data, status, headers, config) {
@@ -88,7 +76,7 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
 
     $scope.sendMessage = function () {
         console.log("in send message ");
-        $http.post('/WhatsOut',{sender:'Ronen',content:'Hello',date:'2014-12-30 20:00:00' }).
+        $http.post('/WhatsOut',{sender:'Ronen',content:'שלום',date:'2014-12-30 20:00:00' ,callType: 'sms' }).
             success(function(data, status, headers, config) {
                 console.log("success");
 
@@ -112,7 +100,7 @@ angular.module("app").controller('MainCtrl', function ($scope, $rootScope, ngDia
     function myPoller() {
         console.log('polling')
         $scope.openMessage();
-        setTimeout(myPoller, 10000);
+        setTimeout(myPoller, 2000);
     }
 
 
